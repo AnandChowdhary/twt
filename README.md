@@ -54,10 +54,10 @@ Install the package from [npm](https://www.npmjs.com/package/twt):
 npm install twt
 ```
 
-Import and use;
+Import and use:
 
 ```ts
-import { sign, verify, decode } from "twt";
+import { sign, verify, decode, validate } from "twt";
 const SECRET = "your-super-safe-secret";
 
 sign("hello", SECRET);
@@ -71,6 +71,9 @@ verify("hello.this-is-not-the-correct-hmac", SECRET);
 
 decode("hello.this-is-not-the-correct-hmac");
 // hello
+
+validate("hello.5112055c05f944f85755efc5cd8970e194e9f45b");
+// true
 ```
 
 ## 👩‍💻 Development

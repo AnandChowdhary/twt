@@ -55,3 +55,24 @@ export const verify = (twt: string, secret: string) => {
  * decode("hello.this-is-not-the-correct-hmac");
  */
 export const decode = (twt: string) => twt.split(/\.(?=[^\.]+$)/)[0];
+
+/**
+ * Validate a TWT **without** verifying it
+ * @param twt - TWT
+ * @example
+ * // returns true
+ * decode("hello.5112055c05f944f85755efc5cd8970e194e9f45b");
+ * @example
+ * // returns false
+ * decode("hello.this-is-not-40-characters");
+ * // returns true
+ * decode("hello.this-is-40-characters-abcdefghijklmnopqr");
+ */
+export const validate = (twt: string) => {
+  const [payload, hmac] = twt.split(/\.(?=[^\.]+$)/);
+  return (
+    twt.includes(".") &&
+    twt.length === payload.length + 41 &&
+    hmac.length === 40
+  );
+};
