@@ -1,59 +1,50 @@
-# 🏷️ Node.ts
+# 🤏 Tiny Web Tokens (TWT)
 
-Opinionated starter for server-side Node.js libraries, with [TypeScript](https://github.com/microsoft/TypeScript), tests with [Jest](https://github.com/facebook/jest), automated releases with [GitHub Actions](https://github.com/features/actions) and [Semantic Release](https://github.com/semantic-release/semantic-release), and coverage reporting from [Travis CI](https://travis-ci.org) to [Coveralls](https://coveralls.io).
+Tiny Web Tokens (TWT) are like JSON Web Tokens (JWT), but for tiny payloads. They're an opinionated, non-standard way to generate and validate string payloads.
 
-[![Node CI](https://img.shields.io/github/workflow/status/AnandChowdhary/node.ts/Node%20CI?label=GitHub%20CI&logo=github)](https://github.com/AnandChowdhary/node.ts/actions)
-[![Travis CI](https://img.shields.io/travis/AnandChowdhary/node.ts?label=Travis%20CI&logo=travis%20ci&logoColor=%23fff)](https://travis-ci.org/AnandChowdhary/node.ts)
-[![Coverage](https://coveralls.io/repos/github/AnandChowdhary/node.ts/badge.svg?branch=master&v=2)](https://coveralls.io/github/AnandChowdhary/node.ts?branch=master)
-[![Dependencies](https://img.shields.io/librariesio/release/npm/twt)](https://libraries.io/npm/@anandchowdhary%2Fnode.ts)
-[![License](https://img.shields.io/npm/l/twt)](https://github.com/AnandChowdhary/node.ts/blob/master/LICENSE)
+[![Node CI](https://img.shields.io/github/workflow/status/koj-co/twt/Node%20CI?label=GitHub%20CI&logo=github)](https://github.com/koj-co/twt/actions)
+[![Travis CI](https://img.shields.io/travis/koj-co/twt?label=Travis%20CI&logo=travis%20ci&logoColor=%23fff)](https://travis-ci.org/koj-co/twt)
+[![Coverage](https://coveralls.io/repos/github/koj-co/twt/badge.svg?branch=master&v=2)](https://coveralls.io/github/koj-co/twt?branch=master)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/twt)](https://libraries.io/npm/twt)
+[![License](https://img.shields.io/npm/l/twt)](https://github.com/koj-co/twt/blob/master/LICENSE)
 [![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/twt.svg)](https://snyk.io/test/npm/twt)
 [![Based on Node.ts](https://img.shields.io/badge/based%20on-node.ts-brightgreen)](https://github.com/AnandChowdhary/node.ts)
 [![npm type definitions](https://img.shields.io/npm/types/twt.svg)](https://unpkg.com/browse/twt/dist/index.d.ts)
 [![npm package](https://img.shields.io/npm/v/twt.svg)](https://www.npmjs.com/package/node.ts)
 [![npm downloads](https://img.shields.io/npm/dw/twt)](https://www.npmjs.com/package/node.ts)
-[![Contributors](https://img.shields.io/github/contributors/AnandChowdhary/node.ts)](https://github.com/AnandChowdhary/node.ts/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/koj-co/twt)](https://github.com/koj-co/twt/graphs/contributors)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 [![npm](https://nodei.co/npm/twt.png)](https://www.npmjs.com/package/twt)
 
-## ⭐ Using Node.ts
+_Looking for the Twitter CLI `twt`? See the docs for v0.x on [GitHub](https://github.com/geoffreydhuyvetters/twt) or [npm](https://www.npmjs.com/package/twt/v/0.10.4)._
 
-### Setting up repository
+## 📋 Spec
 
-To get started, first generate your new repository. There are two ways to do this:
+A TWT is a URL-safe string with a payload and its computed HMAC SHA-1, separated by a period. The length of a TWT is the length of its payload + 31 characters. For example:
 
-1. [Generate a repository with Node.ts template](https://github.com/AnandChowdhary/node.ts/generate) is GitHub's preferred way
-2. [Import this repository](https://github.com/new/import) keeps the commit history, which you may want
+```
+hello.5112055c05f944f85755efc5cd8970e194e9f45b
+```
 
-### Updating `README.md`
+In the above example, the payload is `hello`, and its hash is `5112055c05f944f85755efc5cd8970e194e9f45b`, signed using the secret key `secret`.
 
-Make the following changes to this `README.md` (note that these changes are **case-sensitive**):
+### Is TWT a replacement for JWT?
 
-1. Replace "Node.ts" with your project name
-2. Replace "AnandChowdhary/node.ts" with your GitHub "username/repository"
-3. Replace "twt" with your npm package name
-4. Replace "@anandchowdhary%2Fnode.ts" with your npm package name, [URL-encoded](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
+TWT is not a replacement for JWT, and you should use JWTs for most use cases. TWTs are only useful for no-expiry, string payloads. The use case is instead of using a random-character string, use its TWT, so that users cannot modify it.
 
-### Updating `package.json`
+You should **not** use TWT:
 
-Make the following changes to `package.json`:
+- For secure authentication tokens
+- When you want token expiry
+- When your payload is a JSON object
+- When you want to customize the algorithm
+- When you need to sign with RSA keys
 
-1. Replace "twt" with your npm package name
-2. Change the version to "0.0.0" for Semantic Release to take over
-3. Replace the description with your npm package description
-4. Replace "AnandChowdhary/node.ts" with your GitHub "username/repository"
-5. Replace "Anand Chowdhary <mail@anandchowdhary.com>" with you as the author
-6. Replace "anandchowdhary.github.io" with "username.github.io"
+However, you can use TWT when your payload is a single string with no expiry and you don't want users to modify them, in use cases like:
 
-### Last steps
-
-1. Add your npm token (`NPM_TOKEN`) as a GitHub secret in your repository ([more details](https://github.com/semantic-release/semantic-release/blob/master/docs/recipes/github-actions.md))
-2. Log in or sign up on [Coveralls](https://coveralls.io) and [add your repository](https://coveralls.io/repos/new)
-3. Remove this section ("Using Node.ts"), keeping the "Usage" section below
-4. Replace "AnandChowdhary/eject-dependencies" with your GitHub "username/repository" in `.releaserc.json`
-5. [Set up GitHub Pages with `master` branch](https://help.github.com/en/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#choosing-a-publishing-source)
-6. Write commits messages using [Gitmoji](https://gitmoji.carloscuesta.me)
+- Sessions tokens
+- Unique user IDs
 
 ## 💡 Usage
 
@@ -66,9 +57,20 @@ npm install twt
 Import and use;
 
 ```ts
-import { nodeTs } from "@anandchowdhary/node-ts";
+import { sign, verify, decode } from "twt";
+const SECRET = "your-super-safe-secret";
 
-nodeTs();
+sign("hello", SECRET);
+// hello.5112055c05f944f85755efc5cd8970e194e9f45b
+
+verify("hello.5112055c05f944f85755efc5cd8970e194e9f45b", SECRET);
+// hello
+
+verify("hello.this-is-not-the-correct-hmac", SECRET);
+// Throws an InvalidHmacError
+
+decode("hello.this-is-not-the-correct-hmac");
+// hello
 ```
 
 ## 👩‍💻 Development
@@ -87,4 +89,5 @@ npm run test-without-reporting
 
 ## 📄 License
 
-[MIT](./LICENSE) © [Anand Chowdhary](https://anandchowdhary.com)
+- Code: [MIT](./LICENSE) © [Koj](https://koj.co)
+- Thanks to [Geoffrey Dhuyvetters](https://github.com/geoffreydhuyvetters) for the npm package name `twt`
