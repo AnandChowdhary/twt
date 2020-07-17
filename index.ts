@@ -1,3 +1,5 @@
+import { createHmac } from "crypto";
+
 /**
  * Generate a new TWT from a payload and signature
  * @param payload - Payload
@@ -6,7 +8,8 @@
  * // returns "hello.5112055c05f944f85755efc5cd8970e194e9f45b"
  * sign("hello", "secret");
  */
-export const sign = (payload: string, secret: string) => "";
+export const sign = (payload: string, secret: string) =>
+  `${payload}.${createHmac("sha1", secret).update(payload).digest("hex")}`;
 
 /**
  * Verify a TWT using its secret
