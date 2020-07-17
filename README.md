@@ -21,7 +21,7 @@ _Looking for the Twitter CLI `twt`? See the docs for v0.x on [GitHub](https://gi
 
 ## 📋 Spec
 
-A TWT is a URL-safe string with a payload and its computed HMAC SHA-1, separated by a period. The length of a TWT is the length of its payload + 31 characters. For example:
+A TWT is a URL-safe string with a payload and its computed HMAC SHA-1, separated by a period. The length of a TWT is the length of its payload + 41 characters. For example:
 
 ```
 hello.5112055c05f944f85755efc5cd8970e194e9f45b
@@ -44,7 +44,24 @@ You should **not** use TWT:
 However, you can use TWT when your payload is a single string with no expiry and you don't want users to modify them, in use cases like:
 
 - Sessions tokens
-- Unique user IDs
+- Unique user ID parameters in URLs
+- Fingerprint cookies
+
+### TWTs are Tiny
+
+Compared to a JWT which includes information about the algorithm and base64-encodes the JSON object, TWTs are much smaller because they are hardcoded to use HMAC with SHA-1 (which is insecure but short, and works very well for this use case) and only support a string.
+
+A JWT signed with `secret` and one key-value pair `{ session_id: "fYbiqoTfXHtW6xPuq7hs" }` is **131 characters** long:
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiZlliaXFvVGZYSHRXNnhQdXE3aHMifQ.vrMGzUZ7qt4KXbBRG9VAVlVRGFLXTXYs0cAjQJpSc4s
+```
+
+In comparison, a TWT with the value `fYbiqoTfXHtW6xPuq7hs` is only 61 characters long, less than half of the JWT length.
+
+### Example use case
+
+At [Koj](https://koj.co), we're using TWT as part of our onboarding process. When a new user signs up on https://koj.co/en-ch/get-started, we ask them their name and generate a unique ID for their onboarding session. Then, we redirect them to https://koj.co/en-ch/get-started/fYbiqoTfXHtW6xPuq7hs.daa019dae774e16ea5e3cb5e9c1cf72a6e191f61/furniture/bed, for example, when we ask for their bed preference. In this case, the user's session ID is `fYbiqoTfXHtW6xPuq7hs`, but we use a TWT in the URL. This means that that users cannot simply change the session ID from the address bar to impersonate someone else.
 
 ## 💡 Usage
 
