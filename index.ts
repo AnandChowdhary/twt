@@ -1,6 +1,18 @@
 import { createHmac } from "crypto";
 
 /**
+ * InvalidHmacError is thrown when HMACs don't match
+ * @source https://rclayton.silvrback.com/custom-errors-in-node-js
+ */
+export class InvalidHmacError extends Error {
+  constructor(message?: any) {
+    super(message);
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+/**
  * Generate a new TWT from a payload and signature
  * @param payload - Payload
  * @param secret - Secret
@@ -25,7 +37,12 @@ export const sign = (payload: string, secret: string) =>
  * // Throws an InvalidHmacError
  * verify("hello.5112055c05f944f85755efc5cd8970e194e9f45b", "incorrect-secret");
  */
-export const verify = (twt: string, secret: string) => "";
+export const verify = (twt: string, secret: string) => {
+  const [payload, hmac] = twt.split(/\.(?=[^\.]+$)/);
+  if (createHmac("sha1", secret).update(payload).digest("hex") !== hmac)
+    throw new InvalidHmacError();
+  return payload;
+};
 
 /**
  * Decode a TWT **without** verifying it (not recommended)
@@ -37,4 +54,4 @@ export const verify = (twt: string, secret: string) => "";
  * // returns "hello"
  * decode("hello.this-is-not-the-correct-hmac");
  */
-export const decode = (twt: string) => "";
+export const decode = (twt: string) => twt.split(/\.(?=[^\.]+$)/)[0];
