@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AnandChowdhary/node.ts.git"
+    "url": "https://github.com/koj-co/twt.git"
   },
   "keywords": [
     "node.js",
@@ -31,9 +31,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AnandChowdhary/node.ts/issues"
+    "url": "https://github.com/koj-co/twt/issues"
   },
-  "homepage": "https://anandchowdhary.github.io/node.ts/",
+  "homepage": "https://koj.github.io/twt/",
   "dependencies": {},
   "devDependencies": {
     "@semantic-release/git": "^9.0.0",
