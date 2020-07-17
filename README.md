@@ -93,6 +93,8 @@ validate("hello.5112055c05f944f85755efc5cd8970e194e9f45b");
 // true
 ```
 
+Note: For the secret you should generate and use a random 160-bit key. 
+
 ## 👩‍💻 Development
 
 Build TypeScript:
