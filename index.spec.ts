@@ -1,4 +1,4 @@
-import { sign, verify, decode, InvalidHmacError } from "./index";
+import { sign, verify, decode, InvalidHmacError, validate } from "./index";
 
 describe("sign", () => {
   it("generates a TWT", () => {
@@ -64,5 +64,16 @@ describe("sign", () => {
     expect(decode("hello.invalid hmac")).toBe("hello");
     expect(decode("hello world.invalid hmac")).toBe("hello world");
     expect(decode("hello.invalid hmac")).toBe("hello");
+  });
+
+  it("validates a TWT", () => {
+    expect(
+      validate("hello.5112055c05f944f85755efc5cd8970e194e9f45b")
+    ).toBeTruthy();
+    expect(
+      validate("hello.1111111111111111111111111111111111111111")
+    ).toBeTruthy();
+    expect(validate("hello.invalid-length")).toBeFalsy();
+    expect(validate("hello-no-period-seperator")).toBeFalsy();
   });
 });
