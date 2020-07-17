@@ -1,7 +1,7 @@
-import { nodeTs } from "./index";
+import { sign } from "./index";
 
-describe("node.ts", () => {
+describe("TWT signing", () => {
   it("works", () => {
-    expect(nodeTs()).toBeTruthy();
+    expect(sign("", "")).toBe("");
   });
 });
