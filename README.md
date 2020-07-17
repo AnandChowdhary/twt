@@ -5,17 +5,17 @@ Opinionated starter for server-side Node.js libraries, with [TypeScript](https:/
 [![Node CI](https://img.shields.io/github/workflow/status/AnandChowdhary/node.ts/Node%20CI?label=GitHub%20CI&logo=github)](https://github.com/AnandChowdhary/node.ts/actions)
 [![Travis CI](https://img.shields.io/travis/AnandChowdhary/node.ts?label=Travis%20CI&logo=travis%20ci&logoColor=%23fff)](https://travis-ci.org/AnandChowdhary/node.ts)
 [![Coverage](https://coveralls.io/repos/github/AnandChowdhary/node.ts/badge.svg?branch=master&v=2)](https://coveralls.io/github/AnandChowdhary/node.ts?branch=master)
-[![Dependencies](https://img.shields.io/librariesio/release/npm/@anandchowdhary/node.ts)](https://libraries.io/npm/@anandchowdhary%2Fnode.ts)
-[![License](https://img.shields.io/npm/l/@anandchowdhary/node.ts)](https://github.com/AnandChowdhary/node.ts/blob/master/LICENSE)
-[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@anandchowdhary/node.ts.svg)](https://snyk.io/test/npm/@anandchowdhary/node.ts)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/twt)](https://libraries.io/npm/@anandchowdhary%2Fnode.ts)
+[![License](https://img.shields.io/npm/l/twt)](https://github.com/AnandChowdhary/node.ts/blob/master/LICENSE)
+[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/twt.svg)](https://snyk.io/test/npm/twt)
 [![Based on Node.ts](https://img.shields.io/badge/based%20on-node.ts-brightgreen)](https://github.com/AnandChowdhary/node.ts)
-[![npm type definitions](https://img.shields.io/npm/types/@anandchowdhary/node.ts.svg)](https://unpkg.com/browse/@anandchowdhary/node.ts/dist/index.d.ts)
-[![npm package](https://img.shields.io/npm/v/@anandchowdhary/node.ts.svg)](https://www.npmjs.com/package/node.ts)
-[![npm downloads](https://img.shields.io/npm/dw/@anandchowdhary/node.ts)](https://www.npmjs.com/package/node.ts)
+[![npm type definitions](https://img.shields.io/npm/types/twt.svg)](https://unpkg.com/browse/twt/dist/index.d.ts)
+[![npm package](https://img.shields.io/npm/v/twt.svg)](https://www.npmjs.com/package/node.ts)
+[![npm downloads](https://img.shields.io/npm/dw/twt)](https://www.npmjs.com/package/node.ts)
 [![Contributors](https://img.shields.io/github/contributors/AnandChowdhary/node.ts)](https://github.com/AnandChowdhary/node.ts/graphs/contributors)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-[![npm](https://nodei.co/npm/@anandchowdhary/node.ts.png)](https://www.npmjs.com/package/@anandchowdhary/node.ts)
+[![npm](https://nodei.co/npm/twt.png)](https://www.npmjs.com/package/twt)
 
 ## ⭐ Using Node.ts
 
@@ -32,14 +32,14 @@ Make the following changes to this `README.md` (note that these changes are **ca
 
 1. Replace "Node.ts" with your project name
 2. Replace "AnandChowdhary/node.ts" with your GitHub "username/repository"
-3. Replace "@anandchowdhary/node.ts" with your npm package name
+3. Replace "twt" with your npm package name
 4. Replace "@anandchowdhary%2Fnode.ts" with your npm package name, [URL-encoded](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
 
 ### Updating `package.json`
 
 Make the following changes to `package.json`:
 
-1. Replace "@anandchowdhary/node.ts" with your npm package name
+1. Replace "twt" with your npm package name
 2. Change the version to "0.0.0" for Semantic Release to take over
 3. Replace the description with your npm package description
 4. Replace "AnandChowdhary/node.ts" with your GitHub "username/repository"
@@ -57,10 +57,10 @@ Make the following changes to `package.json`:
 
 ## 💡 Usage
 
-Install the package from [npm](https://www.npmjs.com/package/@anandchowdhary/node.ts):
+Install the package from [npm](https://www.npmjs.com/package/twt):
 
 ```bash
-npm install @anandchowdhary/node.ts
+npm install twt
 ```
 
 Import and use;
