@@ -61,6 +61,8 @@ In comparison, a TWT with the value `fYbiqoTfXHtW6xPuq7hs` is only 61 characters
 
 ### Example use case
 
+For example, if you have a webpage http://example.com/profile?id=3 where the user with ID = 3 can edit their profile, you can use a TWT instead: http://example.com/profile?id=3.be77b8164d46977945ca0eb988c4dfa3a39a65bf. This means that users cannot change the ID from the address bar to impersonate someone else (of course, there are other checks to ensure permissions, but you get the idea).
+
 At [Koj](https://koj.co), we're using TWT as part of our onboarding process. When a new user signs up on https://koj.co/en-ch/get-started, we ask them their name and generate a unique ID for their onboarding session. Then, we redirect them to https://koj.co/en-ch/get-started/fYbiqoTfXHtW6xPuq7hs.daa019dae774e16ea5e3cb5e9c1cf72a6e191f61/furniture/bed, for example, when we ask for their bed preference. In this case, the user's session ID is `fYbiqoTfXHtW6xPuq7hs`, but we use a TWT in the URL. This means that that users cannot simply change the session ID from the address bar to impersonate someone else.
 
 ## 💡 Usage
