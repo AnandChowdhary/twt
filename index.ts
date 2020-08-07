@@ -21,7 +21,7 @@ export class InvalidHmacError extends Error {
  * sign("hello", "secret");
  */
 export const sign = (payload: string, secret: string) =>
-  `${payload}${createHmac("sha1", secret).update(payload).digest("hex")}`;
+  `${payload}${createHmac("md5", secret).update(payload).digest("hex")}`;
 
 /**
  * Verify a TWT using its secret
@@ -42,7 +42,7 @@ export const verify = (twt: string, secret: string) => {
     twt.substring(0, twt.length - 40),
     twt.substr(twt.length - 40),
   ];
-  if (createHmac("sha1", secret).update(payload).digest("hex") !== hmac)
+  if (createHmac("md5", secret).update(payload).digest("hex") !== hmac)
     throw new InvalidHmacError();
   return payload;
 };
