@@ -5,6 +5,7 @@ describe("sign", () => {
     expect(sign("hello", "secret")).toBe(
       "hellobade63863c61ed0b3165806ecd6acefc"
     );
+    expect(sign("hello", "secret", 10)).toBe("hellobade63863c");
     expect(sign("hello world", "secret")).toBe(
       "hello world78d6997b1230f38e59b6d1642dfaa3a4"
     );
@@ -17,6 +18,7 @@ describe("sign", () => {
     expect(verify("hellobade63863c61ed0b3165806ecd6acefc", "secret")).toBe(
       "hello"
     );
+    expect(verify("hellobade63863c", "secret", 10)).toBe("hello");
     expect(
       verify("hello world78d6997b1230f38e59b6d1642dfaa3a4", "secret")
     ).toBe("hello world");
@@ -47,6 +49,7 @@ describe("sign", () => {
 
   it("decodes a TWT", () => {
     expect(decode("hellobade63863c61ed0b3165806ecd6acefc")).toBe("hello");
+    expect(decode("hellobade63863c", 10)).toBe("hello");
     expect(decode("hello world78d6997b1230f38e59b6d1642dfaa3a4")).toBe(
       "hello world"
     );
@@ -57,6 +60,7 @@ describe("sign", () => {
 
   it("validates a TWT", () => {
     expect(validate("hellobade63863c61ed0b3165806ecd6acefc")).toBeTruthy();
+    expect(validate("hellobade63863c", 10)).toBeTruthy();
     expect(
       validate("hello1111111111111111111111111111111111111111")
     ).toBeTruthy();
