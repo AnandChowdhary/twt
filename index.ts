@@ -39,8 +39,8 @@ export const sign = (payload: string, secret: string) =>
  */
 export const verify = (twt: string, secret: string) => {
   const [payload, hmac] = [
-    twt.substring(0, twt.length - 40),
-    twt.substr(twt.length - 40),
+    twt.substring(0, twt.length - 32),
+    twt.substr(twt.length - 32),
   ];
   if (createHmac("md5", secret).update(payload).digest("hex") !== hmac)
     throw new InvalidHmacError();
@@ -57,7 +57,7 @@ export const verify = (twt: string, secret: string) => {
  * // returns "hello"
  * decode("hellothis-is-not-the-correct-hmac");
  */
-export const decode = (twt: string) => twt.substring(0, twt.length - 40);
+export const decode = (twt: string) => twt.substring(0, twt.length - 32);
 
 /**
  * Validate a TWT **without** verifying it
@@ -67,14 +67,14 @@ export const decode = (twt: string) => twt.substring(0, twt.length - 40);
  * decode("hello5112055c05f944f85755efc5cd8970e194e9f45b");
  * @example
  * // returns false
- * decode("hellothis-is-not-40-characters");
+ * decode("hellothis-is-not-32-characters");
  * // returns true
- * decode("hellothis-is-40-characters-abcdefghijklmnopqr");
+ * decode("hellothis-is-32-characters-abcdefghijklmnopqr");
  */
 export const validate = (twt: string) => {
   const [payload, hmac] = [
-    twt.substring(0, twt.length - 40),
-    twt.substr(twt.length - 40),
+    twt.substring(0, twt.length - 32),
+    twt.substr(twt.length - 32),
   ];
-  return twt.length === payload.length + 40 && hmac.length === 40;
+  return twt.length === payload.length + 32 && hmac.length === 32;
 };
