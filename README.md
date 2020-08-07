@@ -21,13 +21,13 @@ _Looking for the Twitter CLI `twt`? See the docs for v0.x on [GitHub](https://gi
 
 ## 📋 Spec
 
-A TWT is a URL-safe string with a payload and its computed HMAC SHA-1, separated by a period. The length of a TWT is the length of its payload + 41 characters. For example:
+A TWT is a URL-safe string with a payload and its computed HMAC MD5. The length of a TWT is the length of its payload + 32 characters. For example:
 
 ```
-hello.5112055c05f944f85755efc5cd8970e194e9f45b
+hellobade63863c61ed0b3165806ecd6acefc
 ```
 
-In the above example, the payload is `hello`, and its hash is `5112055c05f944f85755efc5cd8970e194e9f45b`, signed using the secret key `secret`.
+In the above example, the payload is `hello`, and its hash is `bade63863c61ed0b3165806ecd6acefc`, signed using the secret key `secret`.
 
 ### Is TWT a replacement for JWT?
 
@@ -49,21 +49,19 @@ However, you can use TWT when your payload is a single string with no expiry and
 
 ### TWTs are Tiny
 
-Compared to a JWT which includes information about the algorithm and base64-encodes the JSON object, TWTs are much smaller because they are hardcoded to use HMAC with SHA-1 (which is insecure but short, and works very well for this use case) and only support a string.
+Compared to a JWT which includes information about the algorithm and base64-encodes the JSON object, TWTs are much smaller because they are hardcoded to use HMAC with MD5 (which is insecure but short, and works very well for this use case) and only support a string.
 
-A JWT signed with `secret` and one key-value pair `{ session_id: "fYbiqoTfXHtW6xPuq7hs" }` is **131 characters** long:
+A JWT signed with `secret` and one key-value pair `{ session_id: "fYbiqoTfXHtW6xPuq7hs" }` is **131 characters** long, whereas a TWT with the value `fYbiqoTfXHtW6xPuq7hs` is only 52 characters long, less than half of the JWT length.
 
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiZlliaXFvVGZYSHRXNnhQdXE3aHMifQ.vrMGzUZ7qt4KXbBRG9VAVlVRGFLXTXYs0cAjQJpSc4s
 ```
 
-In comparison, a TWT with the value `fYbiqoTfXHtW6xPuq7hs` is only 61 characters long, less than half of the JWT length.
-
 ### Example use case
 
-For example, if you have a webpage http://example.com/profile?id=3 where the user with ID = 3 can edit their profile, you can use a TWT instead: http://example.com/profile?id=3.be77b8164d46977945ca0eb988c4dfa3a39a65bf. This means that users cannot change the ID from the address bar to impersonate someone else (of course, there are other checks to ensure permissions, but you get the idea).
+For example, if you have a webpage http://example.com/profile?id=3 where the user with ID = 3 can edit their profile, you can use a TWT instead: http://example.com/profile?id=3eccbc87e4b5ce2fe28308fd9f2a7baf3. This means that users cannot change the ID from the address bar to impersonate someone else (of course, there are other checks to ensure permissions, but you get the idea).
 
-At [Koj](https://koj.co), we're using TWT as part of our onboarding process. When a new user signs up on https://koj.co/en-ch/get-started, we ask them their name and generate a unique ID for their onboarding session. Then, we redirect them to https://koj.co/en-ch/get-started/fYbiqoTfXHtW6xPuq7hs.daa019dae774e16ea5e3cb5e9c1cf72a6e191f61/furniture/bed, for example, when we ask for their bed preference. In this case, the user's session ID is `fYbiqoTfXHtW6xPuq7hs`, but we use a TWT in the URL. This means that that users cannot simply change the session ID from the address bar to impersonate someone else.
+At [Koj](https://koj.co), we're using TWT as part of our onboarding process. When a new user signs up on https://koj.co/en-ch/get-started, we ask them their name and generate a unique ID for their onboarding session. Then, we redirect them to https://koj.co/en-ch/get-started/fYbiqoTfXHtW6xPuq7hsdaa019dae774e16ea5e3cb5e9c1cf72a/furniture/bed, for example, when we ask for their bed preference. In this case, the user's session ID is `fYbiqoTfXHtW6xPuq7hs`, but we use a TWT in the URL. This means that that users cannot simply change the session ID from the address bar to impersonate someone else.
 
 ## 💡 Usage
 
@@ -80,9 +78,9 @@ import { sign, verify, decode, validate } from "twt";
 const SECRET = "your-super-safe-secret";
 
 sign("hello", SECRET);
-// hello.5112055c05f944f85755efc5cd8970e194e9f45b
+// hellobade63863c61ed0b3165806ecd6acefc
 
-verify("hello.5112055c05f944f85755efc5cd8970e194e9f45b", SECRET);
+verify("hellobade63863c61ed0b3165806ecd6acefc", SECRET);
 // hello
 
 verify("hello.this-is-not-the-correct-hmac", SECRET);
@@ -91,11 +89,14 @@ verify("hello.this-is-not-the-correct-hmac", SECRET);
 decode("hello.this-is-not-the-correct-hmac");
 // hello
 
-validate("hello.5112055c05f944f85755efc5cd8970e194e9f45b");
+validate("hellobade63863c61ed0b3165806ecd6acefc");
 // true
+
+sign("hello", SECRET, 10);
+// hellobade63863c with 10 characters length
 ```
 
-Note: For the secret you should generate and use a random 160-bit key. 
+Note: For the secret you should generate and use a random 160-bit key.
 
 ## 👩‍💻 Development
 
