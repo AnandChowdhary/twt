@@ -1,28 +1,28 @@
-import { sign, verify, decode, InvalidHmacError, validate } from "./index";
+import { sign, verify, decode, validate } from "./index";
 
 describe("sign", () => {
   it("generates a TWT", () => {
     expect(sign("hello", "secret")).toBe(
-      "hello5112055c05f944f85755efc5cd8970e194e9f45b"
+      "hellobade63863c61ed0b3165806ecd6acefc"
     );
     expect(sign("hello world", "secret")).toBe(
-      "hello world03376ee7ad7bbfceee98660439a4d8b125122a5a"
+      "hello world78d6997b1230f38e59b6d1642dfaa3a4"
     );
     expect(sign("hello", "secret-123")).toBe(
-      "helloef86c4b807368c4e40be9e899d7824830e32a392"
+      "hello81ac4b5504d8139113528f7f6c7642bd"
     );
   });
 
   it("verifies a TWT", () => {
+    expect(verify("hellobade63863c61ed0b3165806ecd6acefc", "secret")).toBe(
+      "hello"
+    );
     expect(
-      verify("hello5112055c05f944f85755efc5cd8970e194e9f45b", "secret")
-    ).toBe("hello");
-    expect(
-      verify("hello world03376ee7ad7bbfceee98660439a4d8b125122a5a", "secret")
+      verify("hello world78d6997b1230f38e59b6d1642dfaa3a4", "secret")
     ).toBe("hello world");
-    expect(
-      verify("helloef86c4b807368c4e40be9e899d7824830e32a392", "secret-123")
-    ).toBe("hello");
+    expect(verify("hello81ac4b5504d8139113528f7f6c7642bd", "secret-123")).toBe(
+      "hello"
+    );
     try {
       verify("helloinvalid hmac", "secret");
     } catch (error) {
@@ -34,39 +34,29 @@ describe("sign", () => {
       expect(error.name).toBe("InvalidHmacError");
     }
     try {
-      verify("hello5112055c05f944f85755efc5cd8970e194e9f45b", "invalid-secret");
+      verify("hellobade63863c61ed0b3165806ecd6acefc", "invalid-secret");
     } catch (error) {
       expect(error).toBeDefined();
     }
     try {
-      verify("hello5112055c05f944f85755efc5cd8970e194e9f45b", "invalid-secret");
+      verify("hellobade63863c61ed0b3165806ecd6acefc", "invalid-secret");
     } catch (error) {
       expect(error.name).toBe("InvalidHmacError");
     }
   });
 
   it("decodes a TWT", () => {
-    expect(decode("hello5112055c05f944f85755efc5cd8970e194e9f45b")).toBe(
-      "hello"
-    );
-    expect(decode("hello world03376ee7ad7bbfceee98660439a4d8b125122a5a")).toBe(
+    expect(decode("hellobade63863c61ed0b3165806ecd6acefc")).toBe("hello");
+    expect(decode("hello world78d6997b1230f38e59b6d1642dfaa3a4")).toBe(
       "hello world"
     );
-    expect(decode("helloef86c4b807368c4e40be9e899d7824830e32a392")).toBe(
-      "hello"
-    );
-    expect(decode("helloef86c4b807368c4e40be9e899d7824830e32a392")).toBe(
-      "hello"
-    );
-    expect(decode("hellohellohellohellohellohellohellohellohello")).toBe(
-      "hello"
-    );
+    expect(decode("hello81ac4b5504d8139113528f7f6c7642bd")).toBe("hello");
+    expect(decode("hello81ac4b5504d8139113528f7f6c7642bd")).toBe("hello");
+    expect(decode("hellohellohellohellohellohellohellohe")).toBe("hello");
   });
 
   it("validates a TWT", () => {
-    expect(
-      validate("hello5112055c05f944f85755efc5cd8970e194e9f45b")
-    ).toBeTruthy();
+    expect(validate("hellobade63863c61ed0b3165806ecd6acefc")).toBeTruthy();
     expect(
       validate("hello1111111111111111111111111111111111111111")
     ).toBeTruthy();
