@@ -17,11 +17,11 @@ export class InvalidHmacError extends Error {
  * @param payload - Payload
  * @param secret - Secret
  * @example
- * // returns "hello.5112055c05f944f85755efc5cd8970e194e9f45b"
+ * // returns "hello5112055c05f944f85755efc5cd8970e194e9f45b"
  * sign("hello", "secret");
  */
 export const sign = (payload: string, secret: string) =>
-  `${payload}.${createHmac("sha1", secret).update(payload).digest("hex")}`;
+  `${payload}${createHmac("sha1", secret).update(payload).digest("hex")}`;
 
 /**
  * Verify a TWT using its secret
@@ -29,16 +29,19 @@ export const sign = (payload: string, secret: string) =>
  * @param secret - Secret
  * @example
  * // returns "hello"
- * verify("hello.5112055c05f944f85755efc5cd8970e194e9f45b", "secret");
+ * verify("hello5112055c05f944f85755efc5cd8970e194e9f45b", "secret");
  * @example
  * // Throws an InvalidHmacError
- * verify("hello.this-is-not-the-correct-hmac", "secret");
+ * verify("hellothis-is-not-the-correct-hmac", "secret");
  * @example
  * // Throws an InvalidHmacError
- * verify("hello.5112055c05f944f85755efc5cd8970e194e9f45b", "incorrect-secret");
+ * verify("hello5112055c05f944f85755efc5cd8970e194e9f45b", "incorrect-secret");
  */
 export const verify = (twt: string, secret: string) => {
-  const [payload, hmac] = twt.split(/\.(?=[^\.]+$)/);
+  const [payload, hmac] = [
+    twt.substring(0, twt.length - 40),
+    twt.substr(twt.length - 40),
+  ];
   if (createHmac("sha1", secret).update(payload).digest("hex") !== hmac)
     throw new InvalidHmacError();
   return payload;
@@ -49,30 +52,29 @@ export const verify = (twt: string, secret: string) => {
  * @param twt - TWT
  * @example
  * // returns "hello"
- * decode("hello.5112055c05f944f85755efc5cd8970e194e9f45b");
+ * decode("hello5112055c05f944f85755efc5cd8970e194e9f45b");
  * @example
  * // returns "hello"
- * decode("hello.this-is-not-the-correct-hmac");
+ * decode("hellothis-is-not-the-correct-hmac");
  */
-export const decode = (twt: string) => twt.split(/\.(?=[^\.]+$)/)[0];
+export const decode = (twt: string) => twt.substring(0, twt.length - 40);
 
 /**
  * Validate a TWT **without** verifying it
  * @param twt - TWT
  * @example
  * // returns true
- * decode("hello.5112055c05f944f85755efc5cd8970e194e9f45b");
+ * decode("hello5112055c05f944f85755efc5cd8970e194e9f45b");
  * @example
  * // returns false
- * decode("hello.this-is-not-40-characters");
+ * decode("hellothis-is-not-40-characters");
  * // returns true
- * decode("hello.this-is-40-characters-abcdefghijklmnopqr");
+ * decode("hellothis-is-40-characters-abcdefghijklmnopqr");
  */
 export const validate = (twt: string) => {
-  const [payload, hmac] = twt.split(/\.(?=[^\.]+$)/);
-  return (
-    twt.includes(".") &&
-    twt.length === payload.length + 41 &&
-    hmac.length === 40
-  );
+  const [payload, hmac] = [
+    twt.substring(0, twt.length - 40),
+    twt.substr(twt.length - 40),
+  ];
+  return twt.length === payload.length + 40 && hmac.length === 40;
 };
