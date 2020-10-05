@@ -94,6 +94,10 @@ validate("hellobade63863c61ed0b3165806ecd6acefc");
 
 sign("hello", SECRET, 10);
 // hellobade63863c with 10 characters length
+
+sign("hello", SECRET, 64, "sha256");
+// Example with SHA-256 (requires 64 characters)
+// hello88aab3ede8d3adf94d26ab90d3bafd4a2083070c3bcce9c014ee04a443847c0b
 ```
 
 Note: For the secret you should generate and use a random 160-bit key.
