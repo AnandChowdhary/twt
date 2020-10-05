@@ -100,7 +100,7 @@ sign("hello", SECRET, 64, "sha256");
 // hello88aab3ede8d3adf94d26ab90d3bafd4a2083070c3bcce9c014ee04a443847c0b
 ```
 
-Note: For the secret you should generate and use a random 160-bit key.
+For the secret, you should generate and use a random 160-bit key.
 
 ## 👩‍💻 Development
 
