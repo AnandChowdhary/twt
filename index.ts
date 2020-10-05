@@ -20,8 +20,13 @@ export class InvalidHmacError extends Error {
  * // returns "hello5112055c05f944f85755efc5cd8970e194e9f45b"
  * sign("hello", "secret");
  */
-export const sign = (payload: string, secret: string, length = 32) =>
-  `${payload}${createHmac("md5", secret)
+export const sign = (
+  payload: string,
+  secret: string,
+  length = 32,
+  algorithm = "md5"
+) =>
+  `${payload}${createHmac(algorithm, secret)
     .update(payload)
     .digest("hex")
     .substring(0, length)}`;
@@ -40,13 +45,18 @@ export const sign = (payload: string, secret: string, length = 32) =>
  * // Throws an InvalidHmacError
  * verify("hello5112055c05f944f85755efc5cd8970e194e9f45b", "incorrect-secret");
  */
-export const verify = (twt: string, secret: string, length = 32) => {
+export const verify = (
+  twt: string,
+  secret: string,
+  length = 32,
+  algorithm = "md5"
+) => {
   const [payload, hmac] = [
     twt.substring(0, twt.length - length),
     twt.substr(twt.length - length),
   ];
   if (
-    createHmac("md5", secret)
+    createHmac(algorithm, secret)
       .update(payload)
       .digest("hex")
       .substr(0, length) !== hmac
