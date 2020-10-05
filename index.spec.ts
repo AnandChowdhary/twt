@@ -14,6 +14,12 @@ describe("sign", () => {
     );
   });
 
+  it("generates a TWT using SHA-256", () => {
+    expect(sign("hello", "secret", 64, "sha256")).toBe(
+      "hello88aab3ede8d3adf94d26ab90d3bafd4a2083070c3bcce9c014ee04a443847c0b"
+    );
+  });
+
   it("verifies a TWT", () => {
     expect(verify("hellobade63863c61ed0b3165806ecd6acefc", "secret")).toBe(
       "hello"
